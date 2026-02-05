@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>For Ankit ❤️</title>
+<style>
+  :root{
+    --accent:#ff4d6d;
+    --muted:#999;
+  }
+
+  /* Basic layout */
+  body{
+    margin:0;
+    font-family: "Comic Sans MS", "ComicNeue", "Segoe UI", system-ui, sans-serif;
+    background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    overflow:hidden;
+  }
+
+  /* Card */
+  .card{
+    background:white;
+    padding:32px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,0.18);
+    max-width:420px;
+    width:90%;
+    position:relative;
+    z-index:30; /* sits above hearts */
+  }
+
+  h1{ color:var(--accent); margin:0 0 8px 0; }
+  p{ margin:0 0 8px 0; color:#333; line-height:1.4; }
+
+  button{
+    padding:10px 20px;
+    margin:12px;
+    border:none;
+    border-radius:22px;
+    font-size:15px;
+    cursor:pointer;
+    transition:transform .18s ease, opacity .18s ease;
+    user-select:none;
+  }
+  button:active{ transform:scale(.98); }
+
+  #yesBtn{
+    background:var(--accent);
+    color:white;
+  }
+
+  /* No button floats (fixed) so it can move across viewport */
+  #noBtn{
+    background:var(--muted);
+    color:white;
+    position:fixed;
+    z-index:40;
+    left:50%;
+    transform:translateX(-50%);
+    top:60%;
+    min-width:84px;
+  }
+
+  /* Celebration Message */
+  #loveMessage{
+    display:none;
+    font-size:20px;
+    color:var(--accent);
+    margin-top:18px;
+    animation:pop 360ms ease;
+  }
+
+  @keyframes pop{ from{ transform:scale(.6); opacity:0 } to{ transform:none; opacity:1 } }
+
+  /* Falling Hearts */
+  .heart{
+    position:fixed;
+    top:-10px;
+    color:#ff6b81;
+    font-size:20px;
+    pointer-events:none;
+    z-index:10;
+    animation:fall linear;
+    will-change:transform;
+  }
+
+  @keyframes fall{
+    to{ transform:translateY(110vh) rotate(10deg); opacity:0.6; }
+  }
+
+  /* Accessibility: reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    .heart{ animation:none; display:none; }
+    #noBtn{ transition:none; }
+    #loveMessage{ animation:none; }
+  }
+
+  /* small audio control */
+  #audioControl{
+    background:transparent;
+    border-radius:6px;
+    padding:6px 8px;
+    border:1px solid #eee;
+    font-size:13px;
+    color:#333;
+    margin-top:8px;
+  }
+</style>
+</head>
+<body>
+<!-- Audio (user can pause/play) -->
+<audio id="bgAudio" loop preload="auto" aria-hidden="true">
+  <!-- Use a hosted file or local file. Many browsers block autoplay with sound; user must interact to hear. -->
+  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mp3">
+  Your browser does not support the audio element.
+</audio>
+
+<div class="card" role="region" aria-labelledby="cardTitle">
+  <h1 id="cardTitle">Hi Ankit ❤️</h1>
+  <p>
+    These 8 years with you have been the most beautiful part of my life.
+    You are my comfort, my happiness, and my forever favourite person. 💕
+  </p>
+
+  <h2 style="margin-top:8px">Will you be my Valentine?</h2>
+
+  <div>
+    <button id="yesBtn" onclick="showLove()" aria-controls="loveMessage">Yes 💖</button>
+    <button id="noBtn" aria-hidden="false">No 😢</button>
+  </div>
+
+  <div id="loveMessage" role="status" aria-live="polite">
+    YAYYYYY 😍<br>
+    I love you sooo much Ankit ❤️<br>
+    Forever yours 🥰
+  </div>
+
+  <div>
+    <button id="audioControl" aria-pressed="false">Play music</button>
+  </div>
+</div>
+
+<script>
+  // Keep state to avoid leaking multiple intervals
+  const noBtn = document.getElementById('noBtn');
+  const yesBtn = document.getElementById('yesBtn');
+  const loveMessage = document.getElementById('loveMessage');
+  const bgAudio = document.getElementById('bgAudio');
+  const audioControl = document.getElementById('audioControl');
+
+  // Helpful messages
+  const messages = ["Are you sure? 😢","Think again 😏","You can't escape 😈","Wrong answer 😂"];
+
+  // Ensure the No button stays inside viewport (use button dimensions)
+  function moveNoButtonRandomly(){
+    const btnRect = noBtn.getBoundingClientRect();
+    const padding = 8;
+    const maxX = Math.max(window.innerWidth - btnRect.width - padding, padding);
+    const maxY = Math.max(window.innerHeight - btnRect.height - padding, padding);
+    const x = Math.random() * maxX + padding;
+    const y = Math.random() * maxY + padding;
+    noBtn.style.left = x + 'px';
+    noBtn.style.top = y + 'px';
+    noBtn.innerText = messages[Math.floor(Math.random()*messages.length)];
+  }
+
+  // on hover, move the button
+  noBtn.addEventListener('mouseenter', moveNoButtonRandomly);
+  // also move on focus (keyboard)
+  noBtn.addEventListener('focus', moveNoButtonRandomly);
+
+  // Hearts: single interval guard
+  let heartsInterval = null;
+  let heartsActive = false;
+
+  function showLove(){
+    if (heartsActive) return; // already shown
+    loveMessage.style.display = 'block';
+    loveMessage.setAttribute('aria-hidden','false');
+    startHearts();
+    heartsActive = true

@@ -1,1 +1,96 @@
-<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>Valentine's Day Proposal</title>\n    <style>\n        body {\n            background-color: #ffcccb;\n            color: #fff;\n            font-family: Arial, sans-serif;\n            text-align: center;\n            overflow: hidden;\n        }\n        #envelope {\n            width: 200px;\n            height: 150px;\n            background-color: #e57373;\n            position: relative;\n            margin: 100px auto;\n            border-radius: 10px;\n            transform: rotateY(0deg);\n            transition: transform 0.6s;\n        }\n        #open {\n            transform: rotateY(180deg);\n        }\n        #message {\n            display: none;\n            position: absolute;\n            top: 20%;\n            left: 50%;\n            transform: translate(-50%, -50%);\n            font-size: 24px;\n            color: #d81b60;\n        }\n        .no-button {\n            padding: 10px 20px;\n            background-color: #f44336;\n            border: none;\n            border-radius: 5px;\n            color: white;\n            cursor: pointer;\n        }\n        .no-button:hover {\n            background-color: #d32f2f;\n        }\n    </style>\n</head>\n<body>\n    <div id="envelope">\n        <div id="message">Will you be my Valentine?</div>\n    </div>\n    <button class="no-button" id="noButton">No</button>\n    <script>\n        document.getElementById('envelope').onclick = function() {\n            this.classList.toggle('open');\n            document.getElementById('message').style.display = 'block';\n            startConfetti();\n        };\n\n        function startConfetti() {\n            // Placeholder for confetti animation\n            console.log('Confetti animation would start here.');\n        }\n\n        document.getElementById('noButton').onclick = function() {\n            alert('It’s okay, I just wanted to ask!');\n        };\n    </script>\n</body>\n</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Proposal</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom, #ffe6e6, #ffcccb);
+            overflow: hidden;
+        }
+        h1 {
+            color: #ff007f;
+            font-size: 3em;
+            margin-top: 50px;
+        }
+        #confetti {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+        .heart {
+            font-size: 2em;
+            position: absolute;
+            animation: float 5s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% {transform: translateY(0);}
+            50% {transform: translateY(-20px);}
+            100% {transform: translateY(0);}
+        }
+        #rose-petals {
+            position: absolute;
+            top: 0;
+        }
+        #button {
+            padding: 15px 30px;
+            background: #ff007f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.5em;
+            position: relative;
+        }
+        #no-button {
+            position: absolute;
+            background: #d9534f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 1em;
+            transition: all 0.2s;
+        }
+    </style>
+</head>
+<body>
+    <h1>Will You Be My Valentine, Ankit?</h1>
+    <button id="button">Yes 💖</button>
+    <button id="no-button" onmouseover="moveButton()">No</button>
+    <div id="confetti"></div>
+    <div id="rose-petals"></div>
+    <audio id="romantic-music" src="romantic-music.mp3" loop></audio>
+    <script>
+        document.getElementById('button').onclick = function() {
+            document.body.style.background = 'linear-gradient(to bottom, #f9f9f9, #fff)';
+            document.getElementById('confetti').innerHTML = `<div class='confetti'>🎉</div>`;  
+            document.getElementById('romantic-music').play();
+        };
+
+        function moveButton() {
+            const button = document.getElementById('no-button');
+            button.style.top = Math.random() * window.innerHeight + 'px';
+            button.style.left = Math.random() * window.innerWidth + 'px';
+        }
+
+        function createHearts() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerText = '❤️';
+            heart.style.left = Math.random() * innerWidth + 'px';
+            heart.style.top = innerHeight + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+        setInterval(createHearts, 300);
+    </script>
+</body>
+</html>

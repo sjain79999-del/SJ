@@ -1,1 +1,80 @@
-<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>Valentine's Day Redesign</title>\n    <style>\n        body {\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            height: 100vh;\n            background-color: #f0f8ff;\n            text-align: center;\n        }\n        .container {\n            position: relative;\n        }\n        .roof {\n            position: relative;\n            width: 300px;\n            height: 150px;\n            background-color: #8B4513;\n            border-bottom: 10px solid #654321;\n            margin: auto;\n            top: 50px;\n        }\n        .character {\n            position: absolute;\n            width: 50px;\n            height: 100px;\n            animation: wave 1s infinite;\n        }\n        .boy {\n            background-image: url('boy.png'); // Placeholder for boy animation\n            position: left;\n            bottom: 0;\n        }\n        .girl {\n            background-image: url('girl.png'); // Placeholder for girl animation\n            right: 0;\n            bottom: 0;\n        }\n        @keyframes wave {\n            0% { transform: translateY(0); }\n            50% { transform: translateY(-10px); }\n            100% { transform: translateY(0); }\n        }\n        .message {\n            font-size: 24px;\n            margin-top: 10px;\n        }\n        .button {\n            padding: 10px 20px;\n            font-size: 20px;\n            margin: 20px;\n            cursor: pointer;\n            transition: transform 0.3s;\n        }\n        .no-button:hover {\n            transform: translateY(-10px);\n        }\n    </style>\n</head>\n<body>\n    <div class="container">\n        <div class="roof">\n            <div class="character boy"></div>\n            <div class="character girl"></div>\n        </div>\n        <div class="message">Will you be my Valentine?</div>\n        <button class="button yes-button">Yes</button>\n        <button class="button no-button">No</button>\n    </div>\n    <script>\n        const noButton = document.querySelector('.no-button');\n        noButton.addEventListener('mouseover', function() {\n            const randomX = Math.random() * 50;\n            const randomY = Math.random() * 50;\n            noButton.style.transform = \'translate(\'+ randomX + '\% , '+ randomY + '\%)\';\n        });\n    </script>\n</body>\n</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Rooftop Proposal</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            overflow: hidden;
+        }
+        #rooftop {
+            position: relative;
+            width: 80%;
+            height: 50%;
+            background: #555;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .character {
+            position: absolute;
+            bottom: 20%;
+            width: 10%;
+            animation: bob 1s infinite;
+        }
+        #boy {
+            left: 20%;
+        }
+        #girl {
+            right: 20%;
+        }
+        @keyframes bob {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        #buttons {
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1.5em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        #noButton:hover {
+            transform: translate(-10px, -10px);
+        }
+    </style>
+</head>
+<body>
+    <div id="rooftop">
+        <img id="boy" src="boy.png" alt="Boy Character" class="character">
+        <img id="girl" src="girl.png" alt="Girl Character" class="character">
+        <div id="buttons">
+            <button id="yesButton">Yes</button>
+            <button id="noButton">No</button>
+        </div>
+    </div>
+    <script>
+        const noButton = document.getElementById('noButton');
+        document.addEventListener('mousemove', (e) => {
+            noButton.style.left = Math.random() * (window.innerWidth - noButton.offsetWidth) + 'px';
+            noButton.style.top = Math.random() * (window.innerHeight - noButton.offsetHeight) + 'px';
+        });
+    </script>
+</body>
+</html>
